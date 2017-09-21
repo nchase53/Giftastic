@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Quoth the Giphy</title>
+</head>
+
+<body>
+  <div id="buttons">
+
+    <button data-topic="space">The Final Frontieer</button>
+
+    <button data-topic="dodge hellcat">Skurr Skurr!</button>
+
+    <button data-topic="french fries">Yummmmm!!!</button>
+
+    <button data-topic="Washington Nationals">Lets Go Nats.</button>
+
+    <button data-topic="cool sneakers">Sweet Feet</button>
+  </div>
+    
+  <div id="form">
+    <form id="topic-form">
+      <label for="topic-input">Add a topic</label>
+      <input type="text" id="topic-input"><br>
+
+      <script type="text/javascript">    
+      $("#add-topic").on("click", function() {      
+        console.log("adding topic!");        
+        var userTopic = $(this).attr("#topic-input").val();        
+        var newButton = $("<button>");        
+        newButton.attr("data-topic", userTopic)        
+        $("$buttons").append(newButton);    });
+
+      <input id="add-topic" type="submit" value="Add a topic">
+    </form>
+  </div>
+
+  <div id="gifs-appear-here">
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript">
+    $("button").on("click", function() {
+      var topic = $(this).attr("data-topic");
+      var queryURL = "http://api.giphy.com/v1/gifs/search?q=" +
+        topic + "&api_key=FS3ur8KpCOHsxFiKYEcroyJtDdrkxdiS";
+
+      $.ajax({
+          url: queryURL,
+          method: "GET"
+        })
+        .done(function(response) {
+          var results = response.data;
+
+          for (var i = 0; i < results.length; i++) {
+            var gifDiv = $("<div class='item'>");
+
+            var rating = results[i].rating;
+
+            var p = $("<p>").text("Rating: " + rating);
+
+            var topicImage = $("<img>");
+            topicImage.attr("src", results[i].images.fixed_height.url);
+
+            gifDiv.prepend(p);
+            gifDiv.prepend(topicImage);
+
+            $("#gifs-appear-here").prepend(gifDiv);
+          }
+        });
+    });
+  </script>
+</body>
+
+</html>
