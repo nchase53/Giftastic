@@ -24,15 +24,6 @@
     <form id="topic-form">
       <label for="topic-input">Add a topic</label>
       <input type="text" id="topic-input"><br>
-
-      <script type="text/javascript">    
-      $("#add-topic").on("click", function() {      
-        console.log("adding topic!");        
-        var userTopic = $(this).attr("#topic-input").val();        
-        var newButton = $("<button>");        
-        newButton.attr("data-topic", userTopic)        
-        $("$buttons").append(newButton);    });
-
       <input id="add-topic" type="submit" value="Add a topic">
     </form>
   </div>
@@ -42,6 +33,13 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script type="text/javascript">
+    $("#add-topic").on("click", function() {      
+        console.log("adding topic!");        
+        var userTopic = $(this).attr("#topic-input").val();        
+        var newButton = $("<button>");        
+        newButton.attr("data-topic", userTopic);        
+        $("$buttons").append(newButton);    
+      });
     $("button").on("click", function() {
       var topic = $(this).attr("data-topic");
       var queryURL = "http://api.giphy.com/v1/gifs/search?q=" +
@@ -53,7 +51,6 @@
         })
         .done(function(response) {
           var results = response.data;
-
           for (var i = 0; i < results.length; i++) {
             var gifDiv = $("<div class='item'>");
 
@@ -68,6 +65,7 @@
             gifDiv.prepend(topicImage);
 
             $("#gifs-appear-here").prepend(gifDiv);
+            console.log(gifDiv)
           }
         });
     });
